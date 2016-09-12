@@ -4,7 +4,7 @@
  * Home Page
  */
 $app->get('/', function ($request, $response) {
-    return $response->write('EWEP');
+    return $response->write('Welcome to EWEP.');
 });
 
 $app->post('/api/test', function ($request, $response) {
