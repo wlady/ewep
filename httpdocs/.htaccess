@@ -1,0 +1,15 @@
+AddDefaultCharSet UTF-8
+Options -Indexes
+
+<FilesMatch "(^\.)|(\.tpl|\.twig|\.json|\.sqlite$)">
+    Order Deny,Allow
+    Deny from All
+</FilesMatch>
+
+RewriteEngine On
+RewriteBase /
+
+# all other requests to index.php
+RewriteCond %{REQUEST_FILENAME}         !-f
+RewriteCond %{REQUEST_FILENAME}         !-d
+RewriteRule ^                           index.php [L]
