@@ -38,6 +38,9 @@ class Reporter
             ->setTo($to)
             ->setReplyTo($reply)
             ->addPart($body, 'text/html');
+        if ($res = $this->getPhoto()) {
+            $message->attach($res);
+        }
         $this->mailer->send($message);
     }
 
@@ -54,6 +57,23 @@ class Reporter
             ->setTo($to)
             ->setReplyTo($reply)
             ->addPart($body, 'text/html');
+        if ($res = $this->getPhoto()) {
+            $message->attach($res);
+        }
         $this->mailer->send($message);
+    }
+
+    protected function getPhoto() {
+        $res = false;
+        $files = $this->container['request']->getUploadedFiles();
+        if (!empty($files['photo'])) {
+            $photo = $files['photo'];
+            if ($photo->getError() === UPLOAD_ERR_OK) {
+                $fileName = sys_get_temp_dir() . '/' . $photo->getClientFilename();
+                $photo->moveTo($fileName);
+                $res = \Swift_Attachment::fromPath($fileName);
+            }
+        }
+        return $res;
     }
 }
